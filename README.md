@@ -6,11 +6,11 @@
 
 ## Purpose
 
-- Display a diner menu as a website.
-- Allow the user to select items.
-- Provide the user with details about the items selected
-- provide the user with a total for their order.
-- Retrieve the menu details from the.
+Display a diner menu as a website.
+Allow the user to select items.
+Provide the user with details about the items selected
+provide the user with a total for their order.
+Retrieve the menu details from the.
 
 ## Tools
 

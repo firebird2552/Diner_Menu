@@ -16,7 +16,5 @@
     "url": "https://github.com/firebird2552/Diner_Menu/issues"
   },
   "homepage": "https://github.com/firebird2552/Diner_Menu#readme",
-  "dependencies": {
-    "axios": "^0.26.1"
-  }
+  "dependencies": {}
 }
