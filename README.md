@@ -25,5 +25,5 @@ Retrieve the menu details from the.
 
 ### Notes
 
-This repository is provided as public for educational use only
-Database is not included in the git repository
+- This repository is provided as public for educational use only
+- Database is not included in the git repository

@@ -6,6 +6,12 @@
   color: black;
 }
 
+.title {
+  font-size: 4rem;
+  text-align: center;
+  font-weight: 900;
+  margin: 2rem;
+}
 .meal-selection.card {
   border: solid 2px black;
   margin: 2rem;
