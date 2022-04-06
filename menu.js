@@ -1,50 +1,39 @@
-const Lunch = {
-    "entrees": {
+/**
+ * Author: Fordorth
+ * Date: 04/05/2022
+ * Purpose: To display a menu as a web page, the menu details are retrieved from a database
+ * Tools: HTML, CSS, JavaScript, Python -> {Flask, SQLAlchemy, Marhmallow}, SQLlite
+ */
 
-        "Chicken": {
-            "Chicken Strips": { "ingredients": ["eggs"], "price": 6.99 },
-            "Chicken Nuggets": { "ingredients": ["eggs"], "price": 5.99 },
-            "Chicken Sandwhich": { "ingredients": ["eggs"], "price": 9.99 },
-            "Grilled Chicken": { "ingredients": ["Chicken"], "price": 8.99 }
-        }
-        ,
-        "Burgers": {
-            "California Burger": { "ingredients": ["Pancakes"], "price": 25.99 },
-            "Pizza Burger": { "ingredients": ["Waffles"], "price": 10.99 },
-            "Steak Burger": { "ingredients": ["French Toast"], "price": 21.99 },
-        }
-    },
-    "sides": {
-        "Baked Potato": { "ingredients": ["eggs"], "price": 6.99 },
-        "Toast": { "ingredients": ["eggs"], "price": 8.99 },
-        "French Fries": { "ingredients": ["eggs"], "price": 7.99 },
-        "Salad": { "ingredients": ["eggs"], "price": 15.99 },
-        "Soup of the Day": { "ingredients": ["eggs"], "price": 5.99 },
-        "Chili": { "ingredients": ["eggs"], "price": 13.99 }
-    }
-}
-
+// Global veriable decleration
 let current_meal = "Breakfast"
+let lastModifiedSide = 0
+
+// Gets the buttons for breakfast, lunch, and dinner from the dom
 const breakfast_button = document.querySelector('.meal-selection.breakfast')
 const lunch_button = document.querySelector('.meal-selection.lunch')
 const dinner_button = document.querySelector('.meal-selection.dinner')
-let lastModifiedSide = 0
 
+// Handles the clicking of the breakfast button
 breakfast_button.onclick = () => {
     current_meal = "Breakfast"
     renderBreakfast()
     console.log(current_meal)
 }
+
+// Handles the clicking of the lunch button
 lunch_button.onclick = () => {
     current_meal = "Lunch"
     console.log(current_meal)
     renderLundin();
 }
+// Handles the clicking of the dinner button
 dinner_button.onclick = () => {
     current_meal = "Dinner"
     console.log(current_meal)
 }
 
+// handles when an entree was clicked
 const handleEntreeClick = (event, entrees) => {
     let entree = document.querySelector(".current-meal.entree.selection")
 
@@ -63,6 +52,7 @@ const handleEntreeClick = (event, entrees) => {
     entree.innerText = target.children[0].innerText
 }
 
+// Handles when a side is clicked
 const handleSideClick = (e, sides) => {
     let side_selection = document.querySelectorAll(".current-meal.side.selection")
 
@@ -108,6 +98,7 @@ const handleSideClick = (e, sides) => {
     }
 }
 
+// update the total displayed in the total box
 const updateTotal = (price, oldPrice = "0.00") => {
     let totalElement = document.querySelector('.current-meal.total.amount')
     total = totalElement.innerText.substring(1)
@@ -119,6 +110,7 @@ const updateTotal = (price, oldPrice = "0.00") => {
     totalElement.innerText = `$${total}`
 }
 
+// render the entrees onto the menu
 const renderEntrees = (entrees) => {
     const entreesElement = document.querySelector(".menu.entrees");
     if (!Array.isArray(entrees)) {
@@ -190,6 +182,7 @@ const renderEntrees = (entrees) => {
     }
 }
 
+// Render the side onto the menu
 const renderSides = (sides) => {
     const sidesElement = document.querySelector(".menu .sides");
     if (!Array.isArray(sides)) {
@@ -227,6 +220,7 @@ const renderSides = (sides) => {
     }
 }
 
+// Render the breakfast menu
 const renderBreakfast = async () => {
     clearMenu()
 
@@ -240,6 +234,7 @@ const renderBreakfast = async () => {
     }
 }
 
+// Render the lunch and dinner menu
 const renderLundin = async () => {
     clearMenu()
     try {
@@ -253,6 +248,7 @@ const renderLundin = async () => {
 
 }
 
+// Clears the previous rendered menu
 const clearMenu = () => {
     const entreesElement = document.querySelector(".menu .entrees");
     const sidesElement = document.querySelector(".menu .sides");
@@ -261,17 +257,26 @@ const clearMenu = () => {
 
 }
 
+// Gets the current time
 let hour = new Date(Date.now()).getHours()
 
+
+// If the current time is before 11 am default to breakfast menu
 if (hour < 11) {
     current_meal = "Breakfast"
 }
+
+// if the current time is after 11 but before 5 pm default to lunch menu
 else if (hour < 17) {
     current_meal = "Lunch"
-} else {
+} else
+// Otherwise default to the dinner menu
+
+{
     current_meal = "Dinner"
 }
 
+// render the current menu selection.
 if (current_meal === "Breakfast") {
     renderBreakfast()
 } else if (current_meal === "Lunch" || current_meal === "Dinner") {
