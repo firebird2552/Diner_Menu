@@ -1,29 +1,3 @@
-const breakfast = {
-    "entrees": {
-
-        "Omelets & Scrambles": {
-            "Eggs Benedict": { "ingredients": ["eggs"], "price": 14.99 },
-            "Scrambled Eggs": { "ingredients": ["eggs"], "price": 8.99 },
-            "Omelette": { "ingredients": ["eggs"], "price": 8.99 }
-        }
-        ,
-        "Pacakes & Waffles": {
-            "Pancakes": { "ingredients": ["Pancakes"], "price": 14.99 },
-            "Waffles": { "ingredients": ["Waffles"], "price": 14.99 },
-            "French Toast": { "ingredients": ["French Toast"], "price": 14.99 },
-        }
-    },
-    "sides": {
-        "Hashbrowns": { "ingredients": ["eggs"], "price": 4.99 },
-        "Toast": { "ingredients": ["eggs"], "price": 8.99 },
-        "French Fries": { "ingredients": ["eggs"], "price": 7.99 },
-        "Biscuits": { "ingredients": ["eggs"], "price": 15.99 },
-        "Sausage": { "ingredients": ["eggs"], "price": 27.99 },
-        "Bacon": { "ingredients": ["eggs"], "price": 13.99 },
-        "English Muffin": { "ingredients": ["eggs"], "price": 12.99 },
-        "Ham": { "ingredients": ["eggs"], "price": 20.99 }
-    }
-}
 const Lunch = {
     "entrees": {
 
@@ -73,20 +47,20 @@ dinner_button.onclick = () => {
 
 const handleEntreeClick = (event, entrees) => {
     let entree = document.querySelector(".current-meal.entree.selection")
+
     let target = event.currentTarget
+
     if (entree.innerText === "No Selection") {
         entree.innerText = target.children[0].innerText
         updateTotal(target.children[1].innerText)
     } else {
-        for (key in entrees) {
-            for (item in entrees[key]) {
-                if (item === entree.innerText) {
-                    updateTotal(target.children[1].innerText, entrees[key][item].price)
-                }
+        for (let count = 0; count < entrees.length; count++) {
+            if (entrees[count].name === entree.innerText) {
+                updateTotal(target.children[1].innerText, entrees[count].price)
             }
         }
-        entree.innerText = target.children[0].innerText
     }
+    entree.innerText = target.children[0].innerText
 }
 
 const handleSideClick = (e, sides) => {
@@ -100,16 +74,14 @@ const handleSideClick = (e, sides) => {
 
         switch (lastModifiedSide) {
             case 1:
-                console.log("first side was last modified")
                 if (side_selection[1].innerText === "No Selection") {
                     updateTotal(e.currentTarget.children[1].innerText)
                 } else {
-                    for (side in sides) {
-                        if (side === side_selection[1].innerText) {
-                            console.log(side)
-                            updateTotal(e.currentTarget.children[1].innerText, sides[side].price)
+                    sides.forEach(side => {
+                        if (side.name === side_selection[1].innerText) {
+                            updateTotal(e.currentTarget.children[1].innerText, side.price)
                         }
-                    }
+                    })
                 }
 
                 side_selection[1].innerText = e.currentTarget.children[0].innerText
@@ -117,20 +89,17 @@ const handleSideClick = (e, sides) => {
                 break;
 
             case 2:
-                console.log("second side was last modified")
                 if (side_selection[0].innerText === "No Selection") {
                     console.log(side_selection[0].innerText)
                     updateTotal(e.currentTarget.children[1].innerText)
 
                 } else {
-                    for (side in sides) {
-                        if (side === side_selection[0].innerText) {
-                            console.log(side)
-                            console.log(sides[side].price)
-                            updateTotal(e.currentTarget.children[1].innerText, sides[side].price)
+                    sides.forEach(side => {
+                        if (side.name === side_selection[0].innerText) {
+                            updateTotal(e.currentTarget.children[1].innerText, side.price)
                         }
 
-                    }
+                    })
                 }
                 side_selection[0].innerText = e.currentTarget.children[0].innerText
                 lastModifiedSide = 1
@@ -140,86 +109,150 @@ const handleSideClick = (e, sides) => {
 }
 
 const updateTotal = (price, oldPrice = "0.00") => {
-    console.log("passed price:", price)
-    console.log("passed oldPrice:", oldPrice)
     let totalElement = document.querySelector('.current-meal.total.amount')
     total = totalElement.innerText.substring(1)
     price = price.substring(1)
-    console.log("removed $ price: ", price)
     price = parseFloat(price)
-    console.log("floated price: ", price)
     oldPrice = parseFloat(oldPrice)
-    console.log("floated oldPrice:", oldPrice)
-    console.log(oldPrice)
     total = parseFloat(total)
-    console.log(total)
     total += price - oldPrice
-    console.log(total)
     totalElement.innerText = `$${total}`
 }
 
 const renderEntrees = (entrees) => {
+    const entreesElement = document.querySelector(".menu.entrees");
+    if (!Array.isArray(entrees)) {
 
-    const entreesElement = document.querySelector(".menu .entrees");
+        for (key in entrees) {
+            let category = document.createElement("div")
+            category.className = "menu category"
+            category.innerHTML = `<div class="menu category header">${key}</div>`
 
-    for (key in entrees) {
-        let category = document.createElement("div")
-        category.className = "menu category"
-        category.innerHTML = `<div class="menu category header">${key}</div>`
+            for (item in entrees[key]) {
+                entree = entrees[key]
+                let body = document.createElement("div")
+                body.className = "menu item_body"
+                body.addEventListener("click", (e) => {
+                    handleEntreeClick(e, entrees)
+                })
+                let item_name = document.createElement("div")
+                item_name.className = "menu item name"
+                item_name.innerText = item
+                let item_price = document.createElement("div")
+                item_price.className = "menu item price"
+                item_price.innerText = `$${entrees[key][item].price}`
+                category.appendChild(body)
 
-        for (item in entrees[key]) {
-            entree = entrees[key]
-            let body = document.createElement("div")
-            body.className = "menu item_body"
-            body.addEventListener("click", (e) => {
+                body.appendChild(item_name)
+                body.appendChild(item_price)
+            }
+            entreesElement.appendChild(category)
+        }
+    } else {
+        let category = []
+        let category_html = []
+        entrees.forEach(item => {
+            if (!category.includes(item.category)) {
+                category.push(item.category)
+                tempElement = document.createElement('div')
+                tempElement.classList = 'menu category'
+
+
+                let categoryHeader = document.createElement('div')
+                categoryHeader.classList = 'menu category header'
+                categoryHeader.innerText = item.category
+
+                tempElement.appendChild(categoryHeader)
+                category_html.push(tempElement)
+            }
+
+            let itemElement = document.createElement('div')
+            let nameElement = document.createElement('div')
+            let priceElement = document.createElement('div')
+
+            itemElement.classList = 'menu item_body'
+            nameElement.classList = 'menu item name'
+            priceElement.classList = 'menu item price'
+
+            nameElement.innerText = item.name
+            priceElement.innerText = `$${item.price}`
+
+            itemElement.appendChild(nameElement)
+            itemElement.appendChild(priceElement)
+            itemElement.addEventListener("click", (e) => {
                 handleEntreeClick(e, entrees)
             })
-            let item_name = document.createElement("div")
-            item_name.className = "menu item name"
-            item_name.innerText = item
-            let item_price = document.createElement("div")
-            item_price.className = "menu item price"
-            item_price.innerText = `$${entrees[key][item].price}`
-            category.appendChild(body)
-
-            body.appendChild(item_name)
-            body.appendChild(item_price)
-        }
-        entreesElement.appendChild(category)
+            category_html[category.indexOf(item.category)].appendChild(itemElement)
+        })
+        category_html.forEach(category => {
+            entreesElement.appendChild(category)
+        })
     }
 }
 
 const renderSides = (sides) => {
     const sidesElement = document.querySelector(".menu .sides");
-    for (item in sides) {
-        let itemBody = document.createElement("div")
-        let itemName = document.createElement("div")
-        let itemPrice = document.createElement("div")
-        itemBody.classList = "menu item_body"
-        itemName.classList = "menu item name"
-        itemName.innerText = item
+    if (!Array.isArray(sides)) {
+        for (item in sides) {
+            let itemBody = document.createElement("div")
+            let itemName = document.createElement("div")
+            let itemPrice = document.createElement("div")
+            itemBody.classList = "menu item_body"
+            itemName.classList = "menu item name"
+            itemName.innerText = item
 
-        itemPrice.classList = "menu item price"
-        itemPrice.innerText = "$" + sides[item].price
-        itemBody.appendChild(itemName)
-        itemBody.appendChild(itemPrice)
-        itemBody.addEventListener('click', (e) => { handleSideClick(e, sides) })
-        sidesElement.appendChild(itemBody)
+            itemPrice.classList = "menu item price"
+            itemPrice.innerText = "$" + sides[item].price
+            itemBody.appendChild(itemName)
+            itemBody.appendChild(itemPrice)
+            itemBody.addEventListener('click', (e) => { handleSideClick(e, sides) })
+            sidesElement.appendChild(itemBody)
+        }
+    } else {
+        sides.forEach(item => {
+            let itemBody = document.createElement("div")
+            let itemName = document.createElement("div")
+            let itemPrice = document.createElement("div")
+            itemBody.classList = "menu item_body"
+            itemName.classList = "menu item name"
+            itemName.innerText = item.name
+
+            itemPrice.classList = "menu item price"
+            itemPrice.innerText = "$" + item.price
+            itemBody.appendChild(itemName)
+            itemBody.appendChild(itemPrice)
+            itemBody.addEventListener('click', (e) => { handleSideClick(e, sides) })
+            sidesElement.appendChild(itemBody)
+        })
     }
 }
 
-const renderBreakfast = () => {
+const renderBreakfast = async () => {
     clearMenu()
-    renderEntrees(breakfast["entrees"])
-    renderSides(breakfast["sides"])
+
+    try {
+        entrees = await fetch('http://localhost:5000/breakfast/entrees').then((response) => { return response.json() })
+        sides = await fetch('http://localhost:5000/breakfast/sides').then((response) => { return response.json() })
+        renderEntrees(entrees)
+        renderSides(sides)
+    } catch (err) {
+        console.error("There was an error fetching the data: ", err)
+    }
 }
 
-const renderLundin = () => {
+const renderLundin = async () => {
     clearMenu()
-    renderEntrees(Lunch["entrees"])
-    renderSides(Lunch["sides"])
+    try {
+        entrees = await fetch('http://localhost:5000/lunch/entrees').then((response) => { return response.json() })
+        sides = await fetch('http://localhost:5000/lunch/sides').then((response) => { return response.json() })
+        renderEntrees(entrees)
+        renderSides(sides)
+    } catch (err) {
+        console.error("There was an error fetching the data: ", err)
+    }
 
 }
+
 const clearMenu = () => {
     const entreesElement = document.querySelector(".menu .entrees");
     const sidesElement = document.querySelector(".menu .sides");
@@ -228,6 +261,16 @@ const clearMenu = () => {
 
 }
 
+let hour = new Date(Date.now()).getHours()
+
+if (hour < 11) {
+    current_meal = "Breakfast"
+}
+else if (hour < 17) {
+    current_meal = "Lunch"
+} else {
+    current_meal = "Dinner"
+}
 
 if (current_meal === "Breakfast") {
     renderBreakfast()

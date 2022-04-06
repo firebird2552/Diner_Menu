@@ -1,3 +1,4 @@
 {
-  "python.analysis.extraPaths": ["./api/menu/models"]
+  "python.analysis.extraPaths": ["./api/menu/models"],
+  "liveServer.settings.multiRootWorkspaceName": "diner_menu"
 }

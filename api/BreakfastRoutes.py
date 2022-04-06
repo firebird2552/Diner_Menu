@@ -10,8 +10,9 @@ def createBreakfastItem():
     name = request.json['name']
     price = request.json['price']
     category = request.json['category']
+    meal_segment = request.json['segment']
     
-    new_item = Breakfast(name=name, price=price, category=category)
+    new_item = Breakfast(name=name, price=price, category=category, mealSegment=meal_segment)
     db.session.add(new_item)
     db.session.commit()
     
@@ -19,24 +20,47 @@ def createBreakfastItem():
     
     return breakfast_schema.jsonify(item)
 
+@app.route('/breakfast/entrees', methods=["GET"])
+def getBreakfastEntrees():
+    
+    print("Request URL: ", request.url)
+    
+    breakfast_menu = Breakfast.query.filter(Breakfast.meal_segment.like('Entree'))
+    print(breakfast_menu)
+    return breakfasts_schema.jsonify(breakfast_menu)
+
+@app.route('/breakfast/sides', methods=["GET"])
+def getBreakfastSides():
+    
+    print("Request URL: ", request.url)
+    
+    breakfast_menu = Breakfast.query.filter(Breakfast.meal_segment.like('Side'))
+    print(breakfast_menu)
+    return breakfasts_schema.jsonify(breakfast_menu)
+
 @app.route('/breakfast', methods=["GET"])
 def getBreakfastMenu():
     breakfast_menu = Breakfast.query.all()
+    print(breakfast_menu)
     return breakfasts_schema.jsonify(breakfast_menu)
 
 @app.route('/breakfast_item/<id>', methods=["PUT"])
 def updateBreakfastItem(id):
     item = Breakfast.query.get(id)
-    name = request.json('name')
-    price = request.json('price')
-    category = request.json('category')
-    item.name = name
+    
+    itemName = request.json['name']
+    price = request.json['price']
+    category = request.json['category']
+    meal_segment = request.json['segment']
+    
+    item.name = itemName
     item.price = price
     item.category = category
+    item.meal_segment = meal_segment
     
     db.session.commit()
     
-    updatedItem = Breakfast.query.get(item.id)
+    updatedItem = Breakfast.query.get(id)
     return breakfast_schema.jsonify(updatedItem)
 
 @app.route('/breakfast_item/<id>', methods=["DELETE"])

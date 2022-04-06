@@ -2,7 +2,7 @@ from database import mallow
 
 class MenuSchema(mallow.Schema):
     class Meta:
-        fields = ('name', "price", "category")
+        fields = ("id", "meal_segment", 'name', "price", "category")
         
 breakfast_schema = MenuSchema()
 lunch_dinner_schema = MenuSchema()
