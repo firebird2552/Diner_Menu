@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <title>Bottega Diner - Menu</title>
+  </head>
+  <body>
+    <div class="meal-selection card">
+      <div class="meal-selection header">Meal Selection</div>
+      <div class="meal-selection body">
+        <div class="meal-selection item breakfast">Breakfast</div>
+        <div class="meal-selection item lunch">Lunch</div>
+        <div class="meal-selection item dinner">Dinner</div>
+      </div>
+    </div>
+    <div class="current-meal card">
+      <div class="current-meal header">Current Meal Selection</div>
+      <div class="current-meal body">
+        <div class="current-meal item entree">
+          <div class="label">Entree</div>
+          <div class="current-meal entree selection">No Selection</div>
+        </div>
+        <div class="current-meal item first-side">
+          <div class="label">First Side</div>
+          <div class="current-meal side selection">No Selection</div>
+        </div>
+        <div class="current-meal item second-side">
+          <div class="label">Second Side</div>
+          <div class="current-meal side selection">No Selection</div>
+        </div>
+        <div class="current-meal item total">
+          <div class="label">Total</div>
+          <div class="current-meal total amount">$0.00</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu card">
+      <div class="menu title header">Breakfast Menu</div>
+      <div class="menu body">
+        <div class="menu section_body entrees">
+          <div class="menu section header">Entrees (select 1)</div>
+        </div>
+        <div class="menu section_body sides">
+          <div class="menu section header">Sides (select 2)</div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="breakfast.json"></script>
+    <script type="text/javascript" src="lunch-dinner.json"></script>
+    <script type="text/javascript" src="menu.js"></script>
+  </body>
+</html>
